@@ -116,6 +116,7 @@ const Dashboard: React.FC = () => {
   }, [appointments]);
 
   const nextAppointment = useMemo(() => {
+    // eslint-disable-next-line
     return appointments.find((appointment) => {
       isAfter(parseISO(appointment.date), new Date());
     });
