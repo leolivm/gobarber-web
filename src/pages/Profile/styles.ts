@@ -56,7 +56,7 @@ export const Content = styled.div`
       }
     }
 
-    input[name='password'] {
+    input[name="password"] {
       margin-top: 8px;
     }
   }
@@ -73,12 +73,13 @@ export const AvatarInput = styled.div`
     border-radius: 50%;
   }
 
-  button {
+  label {
     position: absolute;
     width: 48px;
     height: 48px;
     background: #ff9000;
     border-radius: 50%;
+    cursor: pointer;
     border: 0;
     right: 0;
     bottom: 0;
@@ -88,14 +89,18 @@ export const AvatarInput = styled.div`
     align-items: center;
     justify-content: center;
 
-  svg {
-    width: 20px;
-    height: 20px;
-    color: #312e38;
-  }
+    input {
+      display: none;
+    }
 
-  &:hover {
-    background: ${shade(0.2 , "#ff9000")};
+    svg {
+      width: 20px;
+      height: 20px;
+      color: #312e38;
+    }
+
+    &:hover {
+      background: ${shade(0.2, "#ff9000")};
+    }
   }
-}
 `;

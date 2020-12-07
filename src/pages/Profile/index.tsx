@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, ChangeEvent } from "react";
 import { FiMail, FiLock, FiUser, FiCamera, FiArrowLeft } from "react-icons/fi";
 import { Form } from "@unform/web";
 import { Link, useHistory } from "react-router-dom";
@@ -10,6 +10,7 @@ import { Container, Content, AvatarInput } from "./styles";
 import getValidationErrors from "../../utils/getValidationErrors";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import api from "../../services/api";
 
 interface ProfileFormData {
   email: string;
@@ -18,7 +19,7 @@ interface ProfileFormData {
 
 const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const { signIn, user } = useAuth();
+  const { signIn, user, updateUser } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,25 @@ const Profile: React.FC = () => {
     [signIn, history, addToast]
   );
 
+  const handleAvatarChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const data = new FormData();
+        data.append("avatar", e.target.files[0]);
+
+        api.patch("/users/avatar", data).then((response) => {
+          updateUser(response.data);
+
+          addToast({
+            type: "success",
+            title: "Avatar atualizado!",
+          });
+        });
+      }
+    },
+    [addToast, updateUser]
+  );
+
   return (
     <Container>
       <header>
@@ -72,52 +92,56 @@ const Profile: React.FC = () => {
           </Link>
         </div>
       </header>
-      
+
       <Content>
-          <Form ref={formRef} initialData={{
+        <Form
+          ref={formRef}
+          initialData={{
             name: user.name,
-            email: user.name
-          }} onSubmit={handleSubmit}>
-            <AvatarInput>
-              <img src={user.avatar_url} alt={user.name}/>
-              <button type="button">
-                <FiCamera />
-              </button>
-            </AvatarInput>
-            <h1>Meu perfil</h1>
+            email: user.name,
+          }}
+          onSubmit={handleSubmit}
+        >
+          <AvatarInput>
+            <img src={user.avatar_url} alt={user.name} />
+            <label htmlFor="avatar">
+              <FiCamera />
 
+              <input type="file" id="avatar" onChange={handleAvatarChange} />
+            </label>
+          </AvatarInput>
+          <h1>Meu perfil</h1>
 
-            <Input name="name" icon={FiUser} placeholder="Nome" />
-            <Input name="email" icon={FiMail} placeholder="E-mail" />
+          <Input name="name" icon={FiUser} placeholder="Nome" />
+          <Input name="email" icon={FiMail} placeholder="E-mail" />
 
-            <Input
-              containerStyle={{ marginTop: 24 }}
-              name="old_password"
-              icon={FiLock}
-              type="password"
-              placeholder="Senha atual"
-            />
+          <Input
+            containerStyle={{ marginTop: 24 }}
+            name="old_password"
+            icon={FiLock}
+            type="password"
+            placeholder="Senha atual"
+          />
 
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="Senha"
-            />
+          <Input
+            name="password"
+            icon={FiLock}
+            type="password"
+            placeholder="Senha"
+          />
 
-            <Input
-              name="password_confirmation"
-              icon={FiLock}
-              type="password"
-              placeholder="Confirmar senha"
-            />
+          <Input
+            name="password_confirmation"
+            icon={FiLock}
+            type="password"
+            placeholder="Confirmar senha"
+          />
 
-            <Button loading={loading} type="submit">
-              Confirmar mudanças
-            </Button>
-          </Form>
+          <Button loading={loading} type="submit">
+            Confirmar mudanças
+          </Button>
+        </Form>
       </Content>
-
     </Container>
   );
 };
