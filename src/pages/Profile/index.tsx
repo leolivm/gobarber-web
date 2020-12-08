@@ -40,7 +40,7 @@ const Profile: React.FC = () => {
             .email("Digite um e-mail válido."),
           old_password: Yup.string(),
           password: Yup.string().when("old_password", {
-            is: (val) => !!val.lenght,
+            is: (val) => !!val.length,
             then: Yup.string()
               .min(6, "No mínimo 6 dígitos.")
               .required("Campo obrigatório."),
@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
           }),
           password_confirmation: Yup.string()
             .when("old_password", {
-              is: (val) => !!val.lenght,
+              is: (val) => !!val.length,
               then: Yup.string().required("Campo obrigatório."),
               otherwise: Yup.string(),
             })
@@ -59,7 +59,22 @@ const Profile: React.FC = () => {
           abortEarly: false,
         });
 
-        // await api.post("/profile", data);
+        const formData = Object.assign(
+          {
+            name: data.name,
+            email: data.email,
+          },
+          data.old_password
+            ? {
+                old_password: data.old_password,
+                password: data.password,
+                password_confirmation: data.password_confirmation,
+              }
+            : {}
+        );
+
+        const response = await api.put("/profile", formData);
+        updateUser(response.data);
 
         history.push("/dashboard");
 
@@ -86,7 +101,7 @@ const Profile: React.FC = () => {
         setLoading(false);
       }
     },
-    [history, addToast]
+    [history, addToast, updateUser]
   );
 
   const handleAvatarChange = useCallback(

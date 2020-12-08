@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { isToday, format, parseISO, isAfter } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
-import DayPicker, { DayModifiers } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+import { isToday, format, parseISO, isAfter } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+import DayPicker, { DayModifiers } from "react-day-picker";
+import "react-day-picker/lib/style.css";
 import {
   Container,
   HeaderContent,
@@ -13,7 +13,7 @@ import {
   Calendar,
   NextAppointment,
   Section,
-  Appointment
+  Appointment,
 } from "./styles";
 import api from "../../services/api";
 import logoImg from "../../assets/logo.svg";
@@ -31,9 +31,9 @@ interface Appointment {
   date: string;
   hourFormatted: string;
   user: {
-    name: string,
-    avatar_url: string,
-  }
+    name: string;
+    avatar_url: string;
+  };
 }
 
 const Dashboard: React.FC = () => {
@@ -41,7 +41,9 @@ const Dashboard: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const { signOut, user } = useAuth();
-  const [monthAvailability, setMonthAvailability] = useState<MonthAvailabilityItem[]>([]);
+  const [monthAvailability, setMonthAvailability] = useState<
+    MonthAvailabilityItem[]
+  >([]);
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
     if (modifiers.available && !modifiers.disabled) {
@@ -54,48 +56,53 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    api.get(`/providers/${user.id}/month-availability`, {
-      params: {
-        year: currentMonth.getFullYear(),
-        month: currentMonth.getMonth() + 1,
-      }
-    }).then((response) => {
-      setMonthAvailability(response.data);
-    });
+    api
+      .get(`/providers/${user.id}/month-availability`, {
+        params: {
+          year: currentMonth.getFullYear(),
+          month: currentMonth.getMonth() + 1,
+        },
+      })
+      .then((response) => {
+        setMonthAvailability(response.data);
+      });
   }, [currentMonth, user.id]);
 
   useEffect(() => {
-    api.get<Appointment[]>("/appointments/me", {
-      params: {
-        year: selectedDate.getFullYear(),
-        month: selectedDate.getMonth() + 1,
-        day: selectedDate.getDate(),
-      }
-    }).then((response) => {
-      const appointmentsFormatted = response.data.map((appointment) => {
-        return {
-          ...appointment,
-          hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
-        };
+    api
+      .get<Appointment[]>("/appointments/me", {
+        params: {
+          year: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1,
+          day: selectedDate.getDate(),
+        },
       })
+      .then((response) => {
+        const appointmentsFormatted = response.data.map((appointment) => {
+          return {
+            ...appointment,
+            hourFormatted: format(parseISO(appointment.date), "HH:mm"),
+          };
+        });
 
-      setAppointments(appointmentsFormatted);
-      console.log(response.data);
-    });
+        setAppointments(appointmentsFormatted);
+      });
   }, [selectedDate]);
 
   const disabledDays = useMemo(() => {
-    const dates = monthAvailability.filter(monthDay => monthDay.available === false).map((monthDay) => {
-      const year = currentMonth.getFullYear();
-      const month = currentMonth.getMonth();
-      return new Date(year, month, monthDay.day);
-    })
+    const dates = monthAvailability
+      .filter((monthDay) => monthDay.available === false)
+      .map((monthDay) => {
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        return new Date(year, month, monthDay.day);
+      });
     return dates;
   }, [currentMonth, monthAvailability]);
 
   const selectedDateAsText = useMemo(() => {
     return format(selectedDate, "'Dia' dd 'de' MMMM", {
-      locale: ptBR
+      locale: ptBR,
     });
   }, [selectedDate]);
 
@@ -133,7 +140,9 @@ const Dashboard: React.FC = () => {
 
             <div>
               <span>Bem-vindo,</span>
-              <Link to="/profile"><strong>{user.name}</strong></Link>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
 
@@ -147,7 +156,7 @@ const Dashboard: React.FC = () => {
         <Schedule>
           <h1>Horários agendados</h1>
           <p>
-          {isToday(selectedDate) && <span>Hoje</span>}
+            {isToday(selectedDate) && <span>Hoje</span>}
             <span>{selectedDateAsText}</span>
             <span>{selectedWeekDay}</span>
           </p>
@@ -192,7 +201,6 @@ const Dashboard: React.FC = () => {
                 </div>
               </Appointment>
             ))}
-
           </Section>
 
           <Section>
@@ -223,20 +231,18 @@ const Dashboard: React.FC = () => {
 
         <Calendar>
           <DayPicker
-            weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+            weekdaysShort={["D", "S", "T", "Q", "Q", "S", "S"]}
             fromMonth={new Date()}
-            disabledDays={[
-              { daysOfWeek: [0, 6] }, ...disabledDays
-            ]}
+            disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
             modifiers={{
-              available: { daysOfWeek: [1, 2, 3, 4, 5] }
+              available: { daysOfWeek: [1, 2, 3, 4, 5] },
             }}
             selectedDays={selectedDate}
             onDayClick={handleDateChange}
             onMonthChange={handleMonthChange}
             months={[
-              'Janeiro',
-              'Fevereiro',
+              "Janeiro",
+              "Fevereiro",
               "Março",
               "Abril",
               "Maio",
@@ -246,7 +252,7 @@ const Dashboard: React.FC = () => {
               "Setembro",
               "Outubro",
               "Novembro",
-              "Dezembro"
+              "Dezembro",
             ]}
           />
         </Calendar>
