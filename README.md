@@ -1,44 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">
+  <img alt="Logo" src="https://res.cloudinary.com/ds7s48zv6/image/upload/v1622239265/gobaber_naniog.svg" width="200px">
+</h1>
 
-## Available Scripts
+<h3 align="center">
+  ReactJS Application for GoBarber project
+</h3>
 
-In the project directory, you can run:
+<p align="center">The best way to schedule your service!</p>
 
-### `yarn start`
+## 💇🏻‍♂️ About the project
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- ReactJS web application developed for GoStack bootcamp.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 🚀 Technologies
 
-### `yarn test`
+Technologies that I used to develop this web client
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ReactJS](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React Router DOM](https://reacttraining.com/react-router/)
+- [React Icons](https://react-icons.netlify.com/#/)
+- [UnForm](https://unform.dev/) [💜](https://rocketseat.com.br/)
+- [Yup](https://github.com/jquense/yup)
+- [Styled Components](https://styled-components.com/)
+- [Polished](https://github.com/styled-components/polished)
+- [Axios](https://github.com/axios/axios)
+- [Prettier](https://prettier.io/)
 
-### `yarn build`
+## 💻 Getting started
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Requirements
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Have this application's [API](https://github.com/leolivm/gobarber-api) running
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Clone the project and access the folder**
 
-### `yarn eject`
+```bash
+$ git clone https://github.com/leolivm/gobarber-web.git && cd gobarber-web
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Follow the steps below**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# Install the dependencies
+$ yarn
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Be sure the file 'src/services/api.ts' have the IP to your API
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Start the client
+$ yarn start
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Made with 💜 by Leandro Martins 👋 [See my linkedin](https://www.linkedin.com/in/leandro-martins-0640921a4/)
